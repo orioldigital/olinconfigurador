@@ -100,8 +100,15 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Roobert',sans-
    entrada es "sin añadir"), en fila para no perder espacio vertical — reemplaza
    el acordeón + selector duplicado de la versión anterior. */
 .movil-extra-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;}
-.movil-extra-select{flex:1 1 200px;border:1.5px solid var(--border);border-radius:12px;padding:14px 16px;font-size:12.5px;font-weight:600;color:var(--text);background:#fff;font-family:inherit;cursor:pointer;min-height:47px;}
-.movil-extra-select:not([data-empty="true"]){border-color:var(--movil-ink);background:#F5FEFF;}
+.movil-extra-select{flex:1 1 200px;border:1.5px solid var(--border);border-radius:12px;padding:14px 40px 14px 16px;font-size:12.5px;font-weight:600;color:var(--text);font-family:inherit;cursor:pointer;min-height:47px;
+  appearance:none;-webkit-appearance:none;-moz-appearance:none;
+  background-color:#fff;
+  background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1L6 6L11 1" stroke="%23122622" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+  background-repeat:no-repeat;
+  background-position:right 16px center;
+  background-size:11px 7px;
+}
+.movil-extra-select:not([data-empty="true"]){border-color:var(--movil-ink);background-color:#F5FEFF;}
 
 /* Acordeón plegado por defecto para secciones opcionales (línea fija del pack). */
 
@@ -413,7 +420,7 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Roobert',sans-
     </div>
 
     <div class="footer-bottom">
-      <div class="copy">© 2026 Olin · v17</div>
+      <div class="copy">© 2026 Olin · v18</div>
       <div class="footer-legal">
         <a href="#">Contratación y promoción</a>
         <a href="#">Cookies</a>
