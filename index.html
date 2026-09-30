@@ -109,6 +109,9 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Roobert',sans-
   background-size:11px 7px;
 }
 .movil-extra-select:not([data-empty="true"]){border-color:var(--movil-ink);background-color:#F5FEFF;}
+.movil-extra-select:disabled{cursor:not-allowed;color:var(--muted);background-color:#F1F1F1;border-color:var(--border);
+  background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1L6 6L11 1" stroke="%23A9ADA9" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+}
 
 /* Acordeón plegado por defecto para secciones opcionales (línea fija del pack). */
 
@@ -420,7 +423,7 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Roobert',sans-
     </div>
 
     <div class="footer-bottom">
-      <div class="copy">© 2026 Olin · v18</div>
+      <div class="copy">© 2026 Olin · v19</div>
       <div class="footer-legal">
         <a href="#">Contratación y promoción</a>
         <a href="#">Cookies</a>
@@ -665,6 +668,7 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Roobert',sans-
     sel.className = 'movil-extra-select';
     sel.dataset.empty = cfg.selectedValue ? 'false' : 'true';
     sel.innerHTML = optionsHtml;
+    if(cfg.disabled){ sel.disabled = true; }
     sel.addEventListener('change', (e)=>{ cfg.onChange(e.target.value || null); });
     container.appendChild(sel);
   }
@@ -740,10 +744,13 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Roobert',sans-
 
     // Segunda línea (Individual): la web real de Olin solo ofrece UNA línea
     // adicional (no "hasta 4"), con la misma tabla 12/30/Ilimitada de siempre.
+    // Son parte de la tarifa convergente, así que sin Fibra no suman nada al
+    // precio — los desactivamos para no sugerir que sí lo hacen.
     renderExtraSelect(row, {
       placeholder: '+ Añadir segunda línea (desde '+SECOND_LINE_PRICE['Móvil 12']+'€/mes)',
       selectedValue: state.lines[1] || null,
       options: MOVIL_SECONDARY_OPTIONS.map(o=>({value:o.plan, label:movilDisplayName(o.plan), price:SECOND_LINE_PRICE[o.plan]})),
+      disabled: !state.fibra,
       onChange: (v)=>{ state.lines = v ? [state.lines[0], v] : [state.lines[0]]; renderMovil(); render(); }
     });
 
@@ -752,6 +759,7 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Roobert',sans-
       placeholder: '+ Añadir línea fija (opcional)',
       selectedValue: state.fibraFijo,
       options: fijoSelectOptions(),
+      disabled: !state.fibra,
       onChange: (v)=>{ state.fibraFijo = v; renderMovil(); render(); }
     });
 
@@ -776,11 +784,13 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Roobert',sans-
     row.style.display = 'flex';
 
     // Segunda línea Internacional: SÍ depende del nivel de GB (10/14/20€, ver
-    // INTL_SECOND_LINE_PRICE — corregido con capturas de la web real).
+    // INTL_SECOND_LINE_PRICE — corregido con capturas de la web real). También
+    // convergente: sin Fibra no suma al precio, así que se desactiva.
     renderExtraSelect(row, {
       placeholder: '+ Añadir segunda línea (desde '+INTL_SECOND_LINE_PRICE['Móvil 80']+'€/mes)',
       selectedValue: state.intlSecondLine,
       options: MOVIL_INTL.map(o=>({value:o.plan, label:movilDisplayName(o.plan), price:INTL_SECOND_LINE_PRICE[o.plan]})),
+      disabled: !state.fibra,
       onChange: (v)=>{ state.intlSecondLine = v; renderMovil(); render(); }
     });
 
@@ -791,6 +801,7 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Roobert',sans-
       placeholder: '+ Añadir línea fija (opcional)',
       selectedValue: state.fibraFijo,
       options: fijoSelectOptions(),
+      disabled: !state.fibra,
       onChange: (v)=>{ state.fibraFijo = v; renderMovil(); render(); }
     });
 
@@ -859,10 +870,17 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Roobert',sans-
     // "segunda línea"), pese a que el copy de cabecera dice "Hasta 3 líneas de
     // móvil" — incoherencia a confirmar con cliente, pero la UI sigue lo que
     // el flujo real permite marcar.
+    // El pack Familiar solo tiene precio junto a una Fibra (no existe "Familiar
+    // solo"), así que hasta que no haya Fibra elegida estos selectores no
+    // afectan al total. Los desactivamos para no dar a entender que sí lo
+    // hacen — evita que el usuario configure algo que luego "desaparece".
+    const extrasDisabled = !state.fibra;
+
     renderExtraSelect(row, {
       placeholder: '+ Añadir segunda línea (desde '+SECOND_LINE_PRICE['Móvil 12']+'€/mes)',
       selectedValue: state.familiarExtraLines[0] || null,
       options: MOVIL_SECONDARY_OPTIONS.map(o=>({value:o.plan, label:movilDisplayName(o.plan), price:SECOND_LINE_PRICE[o.plan]})),
+      disabled: extrasDisabled,
       onChange: (v)=>{
         if(v){ state.familiarExtraLines[0] = v; }
         else { state.familiarExtraLines = []; }
@@ -876,6 +894,7 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Roobert',sans-
       placeholder: '+ Añadir línea fija (opcional)',
       selectedValue: state.familiarFijo,
       options: fijoSelectOptions(),
+      disabled: extrasDisabled,
       onChange: (v)=>{ state.familiarFijo = v; renderFamiliar(); render(); }
     });
   }
