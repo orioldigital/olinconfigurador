@@ -55,6 +55,7 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Roobert',sans-
 
 .subhead{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin:18px 0 10px;font-weight:700;}
 .subhead:first-of-type{margin-top:0;}
+.subhead-lc{text-transform:none;letter-spacing:0;}
 
 /* Grid de 4 columnas fijas siempre (igual que Fibra, que siempre tiene 4 tarjetas):
    así toda tarjeta del configurador mide lo mismo, tenga su grupo 2, 3 o 4 opciones
@@ -100,18 +101,20 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Roobert',sans-
    entrada es "sin añadir"), en fila para no perder espacio vertical — reemplaza
    el acordeón + selector duplicado de la versión anterior. */
 .movil-extra-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;}
-.movil-extra-select{flex:1 1 200px;border:1.5px solid var(--border);border-radius:12px;padding:14px 40px 14px 16px;font-size:12.5px;font-weight:600;color:var(--text);font-family:inherit;cursor:pointer;min-height:47px;
+.movil-extra-select,.chip-select{border:1.5px solid var(--border);border-radius:99px;padding:9px 34px 9px 15px;font-size:12.5px;font-weight:600;color:var(--text);font-family:inherit;cursor:pointer;max-width:100%;
   appearance:none;-webkit-appearance:none;-moz-appearance:none;
   background-color:#fff;
   background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1L6 6L11 1" stroke="%23122622" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>');
-  background-repeat:no-repeat;
-  background-position:right 16px center;
-  background-size:11px 7px;
-}
-.movil-extra-select:not([data-empty="true"]){border-color:var(--movil-ink);background-color:#F5FEFF;}
-.movil-extra-select:disabled{cursor:not-allowed;color:var(--muted);background-color:#F1F1F1;border-color:var(--border);
-  background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1L6 6L11 1" stroke="%23A9ADA9" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>');
-}
+  background-repeat:no-repeat;background-position:right 14px center;background-size:10px 6px;}
+/* Selector de Móvil: misma píndola, repartidos en la fila */
+.movil-extra-select{flex:1 1 220px;}
+/* Estado elegido: mismo tono de acento que las cards seleccionadas de cada módulo */
+.chip-select:not([data-empty="true"]){background-color:#F5FFDD;border-color:var(--fibra-ink);color:var(--fibra-ink);font-weight:700;}
+.movil-extra-select:not([data-empty="true"]){background-color:#E2FBFD;border-color:var(--movil-ink);color:var(--movil-ink);font-weight:700;}
+/* Desactivado (sin Fibra o sin la línea anterior): la misma píldora, en espera */
+.movil-extra-select:disabled,.chip-select:disabled{cursor:not-allowed;opacity:.5;}
+/* Nota "añade Fibra": mismo alto que las píldoras, borde discontinuo y sin relleno */
+#movilIndividualFibraNote,#movilIntlFibraNote{background:transparent;min-height:35px;box-sizing:border-box;padding:6px 15px;line-height:20px;display:block;margin-top:10px;border-width:1.5px;}
 
 /* Acordeón plegado por defecto para secciones opcionales (línea fija del pack). */
 
@@ -142,10 +145,18 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Roobert',sans-
 .alarm-sub{font-size:14.5px;color:rgba(255,255,255,.92);margin:0 0 22px;max-width:560px;line-height:1.55;}
 .alarm-btn{background:var(--amber);color:var(--ink);border:none;border-radius:99px;padding:13px 26px;font-weight:700;font-size:14px;white-space:nowrap;font-family:'Roobert';cursor:pointer;}
 
-.side{position:sticky;top:20px;background:var(--ink);border-radius:20px;padding:24px;color:#fff;}
-.side h3{font-size:12.5px;font-weight:700;margin:0 0 14px;color:#B7C7BC;text-transform:uppercase;letter-spacing:.03em;}
+/* El carrito nunca supera el alto de la ventana: título, total y botón quedan
+   fijos y solo la lista de productos hace scroll (antes, con Deco/Ocio/línea fija,
+   el carrito crecía por encima de la pantalla y cortaba el precio y el botón). */
+.side{position:sticky;top:20px;max-height:calc(100vh - 40px);display:flex;flex-direction:column;background:var(--ink);border-radius:20px;padding:24px;color:#fff;}
+.side .default-content{display:flex;flex-direction:column;min-height:0;flex:1 1 auto;}
+.side-scroll{overflow-y:auto;min-height:0;flex:1 1 auto;margin-right:-8px;padding-right:8px;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.28) transparent;}
+.side h3,.side .total-row,.side .buy,.side .fine{flex:0 0 auto;}
+.side h3{font-size:14px;font-weight:700;margin:0 0 14px;color:#B7C7BC;text-transform:uppercase;letter-spacing:.03em;}
 .side-row{display:flex;justify-content:space-between;align-items:flex-start;padding:5px 0;font-size:12.5px;}
-.side-row .l{color:#C6D2CB;font-weight:500;padding-left:26px;}
+.side-row .l{color:#C6D2CB;padding-left:26px;}
+.side-row .lt{display:block;font-weight:600;}
+.side-row .ld{display:block;font-weight:400;font-size:12px;opacity:.7;margin-top:1px;}
 .side-group-head{display:flex;align-items:center;gap:8px;margin:16px 0 6px;padding-top:12px;border-top:1px solid rgba(255,255,255,.14);}
 .side-group-head:first-child{margin-top:0;padding-top:0;border-top:none;}
 .side-group-head .gicon{width:20px;height:20px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
@@ -154,8 +165,9 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Roobert',sans-
 .side-group-head .gicon.movil{background:rgba(0,237,255,.16);}
 .side-group-head .gicon.tv{background:rgba(248,0,255,.16);}
 .side-group-head .gicon.extra{background:rgba(255,176,32,.16);}
-.side-group-head .gtitle{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#C6D2CB;}
-.side-row .r{font-weight:700;text-align:right;color:#fff;font-size:12.5px;white-space:nowrap;}
+.side-group-head .gtitle{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#C6D2CB;}
+.side-row .r{font-weight:700;text-align:right;color:#fff;font-size:var(--price-size,14.5px);white-space:nowrap;}
+.side-row .r.txt{font-size:12.5px;}  /* 'Incluido/Incluidas' no crece */
 .side-row.discount .l{color:var(--fibra);} .side-row.discount .r{color:var(--fibra);}
 .side-row.pending .r{color:var(--amber);font-style:italic;font-weight:600;}
 .promo-pill{display:inline-flex;align-items:center;gap:5px;background:rgba(175,255,0,.15);color:var(--fibra);border:1px solid rgba(175,255,0,.4);border-radius:99px;padding:5px 11px;font-size:11px;font-weight:700;margin:12px 0 4px;}
@@ -177,7 +189,7 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Roobert',sans-
 
 @media(max-width:880px){
   .layout{grid-template-columns:1fr;}
-  .side{position:static;}
+  .side{position:static;max-height:none;}
   .navlinks{display:none;}
   .alarm-banner{height:auto;padding:28px;}
 }
@@ -290,9 +302,8 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Roobert',sans-
            muestran cuando esta familia está activa, justo debajo de sus tarjetas. -->
       <div class="movil-extra-row" id="movilIndividualExtras" style="display:none;"></div>
 
-      <div class="subhead">Familiar</div>
+      <div class="subhead">Familiar - <span class="subhead-lc">hasta 3 líneas móviles con datos compartidos</span></div>
       <div class="cards movil-cards" id="movilFamiliarCards"></div>
-      <div class="movil-extra-row" id="familiarExtrasRow" style="display:none;"></div>
       <p class="movil-mode-note" id="movilFibraNote" style="display:none;">Selecciona también una Fibra más arriba para ver el precio final de este pack.</p>
       <p class="familiar-tv-note" id="familiarTvNote" style="display:none;">📺 Con el pack Familiar, <b>OlinTV te sale gratis</b> (antes 5-8€/mes) — actívalo en el módulo de OlinTV, más abajo.</p>
 
@@ -343,8 +354,10 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Roobert',sans-
   <div class="side" id="sideBox">
     <div class="default-content">
       <h3>Tus productos</h3>
-      <div id="sideRows"></div>
-      <div id="promoPillWrap"></div>
+      <div class="side-scroll">
+        <div id="sideRows"></div>
+        <div id="promoPillWrap"></div>
+      </div>
       <div class="total-row">
         <div>
           <span class="total-strike" id="totalStrike" style="display:none;"></span>
@@ -423,7 +436,7 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Roobert',sans-
     </div>
 
     <div class="footer-bottom">
-      <div class="copy">© 2026 Olin · v19</div>
+      <div class="copy">© 2026 Olin · v27</div>
       <div class="footer-legal">
         <a href="#">Contratación y promoción</a>
         <a href="#">Cookies</a>
@@ -526,15 +539,19 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Roobert',sans-
     {key:'total', name:'Fijo Total', price:18, desc:'Ilimitada Móvil y Fijo'}
   ];
 
-  // Precio de OlinTV como extra sobre la Fibra: en la promo ya no varía por nivel
-  // de OlinTV (Go/Plus/Ultra), solo por la velocidad de Fibra contratada.
-  const TV_PRICE = {'OlinTV Go':8, 'OlinTV Plus':5, 'OlinTV Top':5, 'OlinTV Ultra':5};
+  // OlinTV es un único producto cuyo precio depende de la Fibra contratada (8€ con
+  // Fibra Go, 5€ con el resto — tal como muestra la web real de Olin). Antes
+  // teníamos cuatro tarjetas "OlinTV Go/Plus/Top/Ultra" con ese precio colgado del
+  // nombre de la tarjeta: era un error de modelo nuestro (feedback cliente).
+  const TV_PRICE_BY_FIBRA = {'Fibra Go':8, 'Fibra Plus':5, 'Fibra Top':5, 'Fibra Ultra':5};
 
   const FIBRA_OPTIONS = [
-    {plan:'Fibra Go', spec:'Fibra 600Mb · Router WiFi 6', ribbon:'Destacada · Vuelta al Cole'},
-    {plan:'Fibra Plus', spec:'Fibra 1Gb · Router WiFi 6'},
-    {plan:'Fibra Top', spec:'Fibra 2Gb · Router WiFi 7'},
-    {plan:'Fibra Ultra', spec:'Fibra 10Gb · Router WiFi 6'}
+    // Velocidad y router en dos líneas fijas (feedback cliente: en Fibra Go el "6"
+    // de "WiFi 6" se quedaba colgado solo en una tercera línea).
+    {plan:'Fibra Go', spec:'Fibra 600Mb<br>Router WiFi 6', ribbon:'Destacada · Vuelta al Cole'},
+    {plan:'Fibra Plus', spec:'Fibra 1Gb<br>Router WiFi 6'},
+    {plan:'Fibra Top', spec:'Fibra 2Gb<br>Router WiFi 7'},
+    {plan:'Fibra Ultra', spec:'Fibra 10Gb<br>Router WiFi 6'}
   ];
   const MOVIL_INDIVIDUAL = [
     {plan:'Móvil 12', spec:'12GB con velocidad 5G'},
@@ -547,27 +564,27 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Roobert',sans-
     {plan:'Móvil 150', spec:'150GB con velocidad 5G'},
     {plan:'Móvil 200', spec:'200GB con velocidad 5G'}
   ];
-  const TV_OPTIONS = [
-    {plan:'OlinTV Go', spec:'120 canales · 1 dispositivo'},
-    {plan:'OlinTV Plus', spec:'120 canales · 2 dispositivos'},
-    {plan:'OlinTV Top', spec:'120 canales'},
-    {plan:'OlinTV Ultra', spec:'120 canales · 4K + grabación'}
-  ];
+  // Una sola tarjeta; la segunda línea indica el precio según la Fibra elegida.
+  function tvOptions(){
+    const price = state.fibra ? TV_PRICE_BY_FIBRA[state.fibra] : null;
+    return [{
+      plan:'OlinTV',
+      spec:'Más de 120 canales<br>' + (price!==null ? 'Con tu '+state.fibra+': '+price+'€/mes' : 'Elige una Fibra para ver el precio')
+    }];
+  }
 
   const state = {
     fibra:null,
     tv:null,
-    fibraFijo:null, // línea fija compartida por Individual e Internacional (es la misma línea física del hogar)
+    fibraFijo:null, // línea fija: extra del módulo de Fibra, igual para Individual, Familiar e Internacional
     extras:{ocio:false, cobertura:false, deco:false},
     // movilMode: 'individual' | 'familiar' | 'internacional' — las tres ramas de
     // Móvil son excluyentes entre sí (feedback cliente, punto 4).
     movilMode:'individual',
-    lines:[null],
+    lines:[null],        // Individual: [línea principal, 2ª línea, 3ª línea] (hasta 2 extra)
     intl:null,           // plan elegido dentro de la rama Internacional (Móvil 80/150/200)
-    intlSecondLine:null, // plan elegido para la 2ª línea Internacional (Móvil 80/150/200), o null
-    familiar:null,
-    familiarExtraLines:[],
-    familiarFijo:null
+    intlLines:[],        // Internacional: líneas extra (Móvil 80/150/200), hasta 2
+    familiar:null        // Familiar: el pack ya incluye hasta 3 líneas, sin líneas extra
   };
 
   function cardsHtml(opts, group, selected){
@@ -602,7 +619,7 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Roobert',sans-
       opt.addEventListener('click', ()=>{
         const name = opt.dataset.name;
         state.fibra = (state.fibra===name) ? null : name;
-        if(!state.fibra){ state.fibraFijo=null; state.tv=null; state.extras.ocio=false; state.extras.cobertura=false; state.extras.deco=false; state.familiar=null; state.familiarExtraLines=[]; state.familiarFijo=null; state.intlSecondLine=null; if(state.lines.length>1) state.lines=[state.lines[0]]; }
+        if(!state.fibra){ state.fibraFijo=null; state.tv=null; state.extras.ocio=false; state.extras.cobertura=false; state.extras.deco=false; state.familiar=null; state.intlLines=[]; if(state.lines.length>1) state.lines=[state.lines[0]]; }
         renderFibra(); renderTv(); renderMovil(); render();
       });
     });
@@ -619,6 +636,16 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Roobert',sans-
         render();
       };
     });
+    // Línea fija: extra de Fibra (feedback cliente: sale de Móvil y va a la altura
+    // de WiFi Cobertura+). Un único estado para las tres ramas de Móvil.
+    coberturaChips.querySelectorAll('.chip-select').forEach(s=>s.remove());
+    renderExtraSelect(coberturaChips, {
+      className: 'chip-select',
+      placeholder: '+ Añadir línea fija',
+      selectedValue: state.fibraFijo,
+      options: fijoSelectOptions(),
+      onChange: (v)=>{ state.fibraFijo = v; renderFibra(); render(); }
+    });
   }
 
   function renderTv(){
@@ -626,7 +653,7 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Roobert',sans-
     document.getElementById('tvModule').classList.toggle('disabled', disabled);
     document.getElementById('tvDesc').style.display = disabled ? 'none' : 'block';
     document.getElementById('tvDisabledNote').style.display = disabled ? 'block' : 'none';
-    document.getElementById('tvCards').innerHTML = cardsHtml(TV_OPTIONS, 'tv', state.tv);
+    document.getElementById('tvCards').innerHTML = cardsHtml(tvOptions(), 'tv', state.tv);
     const promoActive = !!state.fibra && !!state.tv;
     document.getElementById('tvPromoBanner').classList.toggle('active', promoActive);
     document.getElementById('tvExtrasHead').style.display = state.tv ? 'block' : 'none';
@@ -657,6 +684,8 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Roobert',sans-
   // su precio. Un solo control hace de "mostrar + elegir + quitar" — sin acordeón
   // ni selector duplicado.
   function renderExtraSelect(container, cfg){
+    // cfg.className permite reutilizarlo con otro aspecto (p. ej. la línea fija
+    // en el módulo de Fibra, con forma de chip).
     const optionsHtml = ['<option value="">'+cfg.placeholder+'</option>']
       .concat(cfg.options.map(o=>{
         const sel = o.value===cfg.selectedValue ? ' selected' : '';
@@ -665,7 +694,7 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Roobert',sans-
       }))
       .join('');
     const sel = document.createElement('select');
-    sel.className = 'movil-extra-select';
+    sel.className = cfg.className || 'movil-extra-select';
     sel.dataset.empty = cfg.selectedValue ? 'false' : 'true';
     sel.innerHTML = optionsHtml;
     if(cfg.disabled){ sel.disabled = true; }
@@ -704,25 +733,17 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Roobert',sans-
           state.movilMode = mode;
           state.lines = [null];
           state.intl = null;
-          state.intlSecondLine = null;
+          state.intlLines = [];
           state.familiar = null;
-          state.familiarExtraLines = [];
-          state.familiarFijo = null;
         }
         if(mode==='individual'){
           state.lines[0] = (state.lines[0]===name) ? null : name;
           if(!state.lines[0]) state.lines = [null];
         } else if(mode==='familiar'){
           state.familiar = (state.familiar===name) ? null : name;
-          if(state.familiar){
-            state.fibraFijo = null;
-          } else {
-            state.familiarExtraLines = [];
-            state.familiarFijo = null;
-          }
         } else if(mode==='internacional'){
           state.intl = (state.intl===name) ? null : name;
-          if(!state.intl) state.intlSecondLine = null;
+          if(!state.intl) state.intlLines = [];
         }
         renderFibra();
         renderMovil();
@@ -737,31 +758,39 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Roobert',sans-
     return FIJO_OPTIONS.map(o=>({value:o.key, label:o.name+' ('+o.desc+')', price:o.price}));
   }
 
+  // Líneas extra (Individual / Internacional): hasta 2. El selector de la tercera
+  // línea solo aparece cuando ya se ha elegido la segunda — así por defecto solo
+  // hay un selector en pantalla y el segundo es una consecuencia natural del primero.
+  // Pertenecen a la tarifa convergente: sin Fibra no suman al precio, por eso se
+  // muestran desactivados hasta que hay una Fibra elegida.
+  const EXTRA_LINE_LABELS = ['segunda', 'tercera'];
+  function renderExtraLinesRow(row, lines, priceTable, options, setLines, rerender){
+    const count = EXTRA_LINE_LABELS.length;  // los dos campos siempre visibles
+    for(let i=0; i<count; i++){
+      renderExtraSelect(row, {
+        placeholder: '+ Añadir '+EXTRA_LINE_LABELS[i]+' línea (desde '+Math.min.apply(null, options.map(o=>priceTable[o.plan]))+'€/mes)',
+        selectedValue: lines[i] || null,
+        options: options.map(o=>({value:o.plan, label:movilDisplayName(o.plan), price:priceTable[o.plan]})),
+        disabled: !state.fibra || i > lines.length,  // la 2ª solo se activa tras elegir la 1ª
+        onChange: (v)=>{
+          const next = lines.slice();
+          if(v){ next[i] = v; } else { next.splice(i); }  // quitar una línea quita también las siguientes
+          setLines(next);
+          rerender();
+        }
+      });
+    }
+  }
+
   function renderMovilIndividual(){
     const row = document.getElementById('movilIndividualExtras');
     row.innerHTML = '';
     row.style.display = 'flex';
 
-    // Segunda línea (Individual): la web real de Olin solo ofrece UNA línea
-    // adicional (no "hasta 4"), con la misma tabla 12/30/Ilimitada de siempre.
-    // Son parte de la tarifa convergente, así que sin Fibra no suman nada al
-    // precio — los desactivamos para no sugerir que sí lo hacen.
-    renderExtraSelect(row, {
-      placeholder: '+ Añadir segunda línea (desde '+SECOND_LINE_PRICE['Móvil 12']+'€/mes)',
-      selectedValue: state.lines[1] || null,
-      options: MOVIL_SECONDARY_OPTIONS.map(o=>({value:o.plan, label:movilDisplayName(o.plan), price:SECOND_LINE_PRICE[o.plan]})),
-      disabled: !state.fibra,
-      onChange: (v)=>{ state.lines = v ? [state.lines[0], v] : [state.lines[0]]; renderMovil(); render(); }
-    });
-
-    // Línea fija (compartida con Internacional, es la misma línea física del hogar).
-    renderExtraSelect(row, {
-      placeholder: '+ Añadir línea fija (opcional)',
-      selectedValue: state.fibraFijo,
-      options: fijoSelectOptions(),
-      disabled: !state.fibra,
-      onChange: (v)=>{ state.fibraFijo = v; renderMovil(); render(); }
-    });
+    // state.lines[0] es la línea principal; las extra son lines[1] y lines[2].
+    renderExtraLinesRow(row, state.lines.slice(1), SECOND_LINE_PRICE, MOVIL_SECONDARY_OPTIONS,
+      (extra)=>{ state.lines = [state.lines[0]].concat(extra); },
+      ()=>{ renderMovil(); render(); });
 
     if(!!state.lines[0] && !state.fibra){
       let note = document.getElementById('movilIndividualFibraNote');
@@ -769,7 +798,7 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Roobert',sans-
         note = document.createElement('p');
         note.id = 'movilIndividualFibraNote';
         note.className = 'movil-note';
-        note.innerHTML = 'La segunda línea y la línea fija son parte de la tarifa <b>convergente</b>: añade también Fibra para poder sumarlas.';
+        note.innerHTML = 'Las líneas adicionales son parte de la tarifa <b>convergente</b>: añade también Fibra para poder sumarlas.';
         row.insertAdjacentElement('afterend', note);
       }
     } else {
@@ -783,27 +812,12 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Roobert',sans-
     row.innerHTML = '';
     row.style.display = 'flex';
 
-    // Segunda línea Internacional: SÍ depende del nivel de GB (10/14/20€, ver
-    // INTL_SECOND_LINE_PRICE — corregido con capturas de la web real). También
-    // convergente: sin Fibra no suma al precio, así que se desactiva.
-    renderExtraSelect(row, {
-      placeholder: '+ Añadir segunda línea (desde '+INTL_SECOND_LINE_PRICE['Móvil 80']+'€/mes)',
-      selectedValue: state.intlSecondLine,
-      options: MOVIL_INTL.map(o=>({value:o.plan, label:movilDisplayName(o.plan), price:INTL_SECOND_LINE_PRICE[o.plan]})),
-      disabled: !state.fibra,
-      onChange: (v)=>{ state.intlSecondLine = v; renderMovil(); render(); }
-    });
-
-    // Línea fija: antes esta rama no la ofrecía — la añadimos, comparte estado
-    // con Individual (misma línea física, la web del cliente la ofrece igual en
-    // las dos tarifas).
-    renderExtraSelect(row, {
-      placeholder: '+ Añadir línea fija (opcional)',
-      selectedValue: state.fibraFijo,
-      options: fijoSelectOptions(),
-      disabled: !state.fibra,
-      onChange: (v)=>{ state.fibraFijo = v; renderMovil(); render(); }
-    });
+    // Líneas extra Internacional: el precio SÍ depende del nivel de GB (10/14/20€,
+    // ver INTL_SECOND_LINE_PRICE — corregido con capturas de la web real). La
+    // tercera línea asume la misma tabla (pendiente de confirmar con cliente).
+    renderExtraLinesRow(row, state.intlLines, INTL_SECOND_LINE_PRICE, MOVIL_INTL,
+      (extra)=>{ state.intlLines = extra; },
+      ()=>{ renderMovil(); render(); });
 
     document.getElementById('intlNote').style.display = 'block';
 
@@ -813,7 +827,7 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Roobert',sans-
         note = document.createElement('p');
         note.id = 'movilIntlFibraNote';
         note.className = 'movil-note';
-        note.innerHTML = 'La segunda línea y la línea fija son parte de la tarifa <b>convergente</b>: añade también Fibra para poder sumarlas.';
+        note.innerHTML = 'Las líneas adicionales son parte de la tarifa <b>convergente</b>: añade también Fibra para poder sumarlas.';
         row.insertAdjacentElement('afterend', note);
       }
     } else {
@@ -853,50 +867,11 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Roobert',sans-
   }
 
   function renderFamiliar(){
+    // Familiar: el pack ya incluye hasta 3 líneas móviles con datos compartidos
+    // (feedback cliente: se quitan las "segundas líneas" para no confundir), así
+    // que aquí solo queda el aviso de OlinTV gratis.
     const showFamiliar = state.movilMode==='familiar' && !!state.familiar;
-    const row = document.getElementById('familiarExtrasRow');
     document.getElementById('familiarTvNote').style.display = showFamiliar ? 'block' : 'none';
-    if(!showFamiliar){
-      row.style.display = 'none';
-      return;
-    }
-    row.innerHTML = '';
-    row.style.display = 'flex';
-
-    // Línea adicional del pack Familiar: misma tabla 12/30/Ilimitada que la
-    // línea Individual — confirmado con capturas de la web real (30/09): Olin
-    // reutiliza el mismo precio de segunda línea. La web real solo permite
-    // UNA línea adicional (radio de un único GB dentro del desplegable de
-    // "segunda línea"), pese a que el copy de cabecera dice "Hasta 3 líneas de
-    // móvil" — incoherencia a confirmar con cliente, pero la UI sigue lo que
-    // el flujo real permite marcar.
-    // El pack Familiar solo tiene precio junto a una Fibra (no existe "Familiar
-    // solo"), así que hasta que no haya Fibra elegida estos selectores no
-    // afectan al total. Los desactivamos para no dar a entender que sí lo
-    // hacen — evita que el usuario configure algo que luego "desaparece".
-    const extrasDisabled = !state.fibra;
-
-    renderExtraSelect(row, {
-      placeholder: '+ Añadir segunda línea (desde '+SECOND_LINE_PRICE['Móvil 12']+'€/mes)',
-      selectedValue: state.familiarExtraLines[0] || null,
-      options: MOVIL_SECONDARY_OPTIONS.map(o=>({value:o.plan, label:movilDisplayName(o.plan), price:SECOND_LINE_PRICE[o.plan]})),
-      disabled: extrasDisabled,
-      onChange: (v)=>{
-        if(v){ state.familiarExtraLines[0] = v; }
-        else { state.familiarExtraLines = []; }
-        renderFamiliar(); render();
-      }
-    });
-
-    // Línea fija propia del pack Familiar (estado independiente del de Individual/
-    // Internacional, tal como ya estaba).
-    renderExtraSelect(row, {
-      placeholder: '+ Añadir línea fija (opcional)',
-      selectedValue: state.familiarFijo,
-      options: fijoSelectOptions(),
-      disabled: extrasDisabled,
-      onChange: (v)=>{ state.familiarFijo = v; renderFamiliar(); render(); }
-    });
   }
 
   function render(){
@@ -924,7 +899,7 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Roobert',sans-
       const r = document.createElement('div');
       r.className = 'side-row' + (opts.discount ? ' discount' : '') + (opts.pending ? ' pending' : '');
       const priceTxt = opts.priceText !== undefined ? opts.priceText : (price===0 ? 'Incluido' : (price>0 ? '+'+price+'€' : price+'€'));
-      r.innerHTML = '<div class="l">'+label+(value?' · '+value:'')+'</div><div class="r">'+priceTxt+'</div>';
+      r.innerHTML = '<div class="l"><span class="lt">'+label+'</span>'+(value?'<span class="ld">'+value+'</span>':'')+'</div><div class="r'+((opts.priceText!==undefined || price===0) ? ' txt' : '')+'">'+priceTxt+'</div>';
       rows.appendChild(r);
     }
 
@@ -948,19 +923,8 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Roobert',sans-
       const familiarPrice = FAMILIAR_BUNDLE[state.fibra][state.familiar];
       addRow('fibra','Fibra + Móvil Familiar', FIBRA_LABEL[state.fibra]+' + '+state.familiar+'GB compartidos', familiarPrice, {discount:true, groupLabel:'Fibra + Móvil'});
       sum += familiarPrice;
-      if(state.familiarFijo){
-        const fijo = FIJO_OPTIONS.find(o=>o.key===state.familiarFijo);
-        addRow('fibra', fijo.name, fijo.desc, fijo.price);
-        sum += fijo.price;
-      }
-      // Líneas adicionales del pack Familiar: misma tabla de precios que la línea
-      // Individual (12/30/Ilimitada) — confirmado con capturas de la web real.
-      state.familiarExtraLines.forEach((plan,i)=>{
-        if(!plan) return;
-        const price = SECOND_LINE_PRICE[plan];
-        addRow('movil', 'Línea familiar '+(i+2), MOVIL_LABEL[plan], price);
-        sum += price;
-      });
+      // Feedback cliente: el carrito debe decir que Familiar son hasta 3 líneas.
+      addRow('fibra','Hasta 3 líneas móviles', 'Con datos compartidos', null, {priceText:'Incluidas'});
     } else if(intlActive){
       if(intlBundleActive){
         addRow('fibra','Fibra + Móvil Internacional', FIBRA_LABEL[state.fibra]+' + '+MOVIL_LABEL[state.intl], intlBundleEntry, {discount:true, groupLabel:'Fibra + Móvil'});
@@ -974,13 +938,13 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Roobert',sans-
         sum += PLAN_PRICE[state.intl];
       }
     } else if(bundleActive){
-      addRow('fibra','Fibra + Móvil · '+PROMO_LABEL, FIBRA_LABEL[state.fibra]+' + '+MOVIL_LABEL[state.lines[0]], bundleEntry, {discount:true, groupLabel:'Fibra + Móvil'});
+      addRow('fibra','Fibra + Móvil', FIBRA_LABEL[state.fibra]+' + '+MOVIL_LABEL[state.lines[0]], bundleEntry, {discount:true, groupLabel:'Fibra + Móvil'});
       sum += bundleEntry;
     } else if(fibraOn){
       addRow('fibra','Fibra', FIBRA_LABEL[state.fibra], PLAN_PRICE[state.fibra]);
       sum += PLAN_PRICE[state.fibra];
     }
-    if(fibraOn && !familiarActive && state.fibraFijo){
+    if(fibraOn && state.fibraFijo){
       const fijo = FIJO_OPTIONS.find(o=>o.key===state.fibraFijo);
       addRow('fibra', fijo.name, fijo.desc, fijo.price);
       sum += fijo.price;
@@ -1010,16 +974,19 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Roobert',sans-
         addRow('movil','Internacional', MOVIL_LABEL[state.intl], PLAN_PRICE[state.intl]);
         sum += PLAN_PRICE[state.intl];
       }
-      if(state.intlSecondLine && fibraOn){
-        const price = INTL_SECOND_LINE_PRICE[state.intlSecondLine];
-        addRow('movil','Segunda línea Internacional', MOVIL_LABEL[state.intlSecondLine], price);
-        sum += price;
+      if(fibraOn){
+        state.intlLines.forEach((plan,i)=>{
+          if(!plan) return;
+          const price = INTL_SECOND_LINE_PRICE[plan];
+          addRow('movil', (i===0?'Segunda':'Tercera')+' línea Internacional', MOVIL_LABEL[plan], price);
+          sum += price;
+        });
       }
     }
 
     if(tvOn){
-      const tvPrice = familiarActive ? 0 : TV_PRICE[state.tv];
-      addRow('tv','OlinTV'+(familiarActive?' · Gratis con Familiar':''), state.tv.replace('OlinTV ',''), tvPrice);
+      const tvPrice = familiarActive ? 0 : TV_PRICE_BY_FIBRA[state.fibra];
+      addRow('tv','OlinTV'+(familiarActive?' gratis con Familiar':''), 'Más de 120 canales', tvPrice);
       sum += tvPrice;
       if(state.extras.ocio){ addRow('extra','Pack Ocio', '', EXTRA_PRICE.ocio); sum += EXTRA_PRICE.ocio; }
       if(state.extras.deco){ addRow('extra','Decodificador OlinTV', 'Alquiler', EXTRA_PRICE.deco); sum += EXTRA_PRICE.deco; }
